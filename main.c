@@ -62,7 +62,6 @@ void pwm_init() {
   /*TCCR0A = (2 << COM0B0) | (3 << WGM00);*/
   TCCR0A = _BV(COM0B1) | _BV(COM0B0) | _BV(WGM01);
   TCCR0B = _BV(CS00) | _BV(WGM03) | _BV(WGM02);
-  /*TCCR0B = (0 << WGM02) | (1 << CS00); // No prescaler*/
   ICR0 = DUTY_TOP;
   OCR0B = ICR0;       // Set initial duty cycle to 0
   DDRB |= (1 << PB1); // Set OC0B as output
@@ -75,8 +74,6 @@ int main() {
   adc_init();
   pwm_init();
 
-  // OCR0B = 80 - 56;
-
   while (1) {
     // Read ADC value
     uint8_t adc = adc_read();
@@ -87,6 +84,6 @@ int main() {
       duty--;
     }
     OCR0B = ICR0 - duty; // Set duty cycle
-    _delay_ms(2);        // 100Hz loop rate
+    _delay_ms(2);        // 500Hz loop rate
   }
 }
